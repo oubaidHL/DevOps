@@ -13,19 +13,21 @@ pipeline {
             }
         }
         stage('Install Node.js and Angular CLI') {
-            steps {
-                script {
-                    sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash'
-                    sh 'export NVM_DIR="$HOME/.nvm"'
-                    sh '''[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm'''
-                    sh 'nvm install --lts'
-                    sh 'nvm use --lts'
-                    sh 'node -v'
-                    sh 'npm install -g @angular/cli'
-                    sh 'ng version'
-                }
-            }
+stage('Install Node.js and Angular CLI') {
+    steps {
+        script {
+            sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash'
+            sh 'export NVM_DIR="$HOME/.nvm"'
+            sh '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm'
+            sh 'nvm install --lts'
+            sh 'nvm use --lts'
+            sh 'node -v'
+            sh 'npm install -g @angular/cli'
+            sh 'ng version'
         }
+    }
+}
+
         stage('Build') {
             steps {
                 sh 'ng build --prod'
