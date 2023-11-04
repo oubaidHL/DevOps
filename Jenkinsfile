@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh '/home/vagrant/.nvm/versions/node/v21.1.0/bin/npm install'
+                sh 'npm install'
                 sh 'ng build --prod'
             }
         }
