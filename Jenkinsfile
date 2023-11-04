@@ -29,7 +29,7 @@ pipeline {
                     sh 'npm install'
 
                     // Run ng build
-                    sh 'ng build'
+                    sh '/var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/ng build'
                 }
             }
         }
