@@ -33,7 +33,7 @@ pipeline {
                     npm install
 
                     # Build your Angular application
-                    ng build
+                    ng build --prod
                 '''
             }
         }
@@ -41,7 +41,6 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build the Docker image
                     sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ."
                 }
             }
