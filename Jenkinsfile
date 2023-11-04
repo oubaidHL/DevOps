@@ -16,7 +16,7 @@ pipeline {
 
                     # Activate nvm
                     export NVM_DIR="$HOME/.nvm"
-                    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
                     # Install Node.js 14 and make it the default version
                     nvm install 14
