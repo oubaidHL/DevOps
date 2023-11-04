@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    options {
-        // Treat bundle size warnings as non-fatal
-        skipStagesOnError(true)
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -46,8 +41,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Skip the warnings by using || true
-                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ." || true
+                    // Build the Docker image
+                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ."
                 }
             }
         }
