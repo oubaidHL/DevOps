@@ -13,9 +13,22 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'npm install'
-                sh 'npm install -g @angular/cli'
-                sh 'ng build --prod'
+        script {
+            def nodeBin = '/var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/'
+            def npmBin = '/var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/'
+
+            // Add the npm path to the PATH variable
+            env.PATH = "${npmBin}:${env.PATH}"
+
+            // Verify that the PATH variable is correctly set
+            sh 'echo $PATH'
+
+            // Run npm install to install project dependencies
+            sh 'npm install'
+
+            // Run ng build
+            sh 'ng build --prod'
+        }
             }
         }
         stage('Build Docker Image') {
