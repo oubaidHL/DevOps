@@ -3,6 +3,7 @@ pipeline {
     environment {
         DOCKER_IMAGE_NAME = 'app-front'
         DOCKER_IMAGE_VERSION = '1.0.0'
+        NVM_DIR = "$HOME/.nvm"
     }
 
     stages {
@@ -15,6 +16,12 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    def nodeBin = "${NVM_DIR}/versions/node/v14.17.3/bin/"
+                    def npmBin = "${NVM_DIR}/versions/node/v14.17.3/bin/"
+
+                    // Add the npm path to the PATH variable
+                    env.PATH = "${npmBin}:${env.PATH}"
+
                     // Verify that the PATH variable is correctly set
                     sh 'echo $PATH'
 
