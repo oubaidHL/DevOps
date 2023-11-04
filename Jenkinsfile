@@ -31,6 +31,15 @@ pipeline {
             }
         }
 
+        stage('Install Angular CLI') {
+            steps {
+                script {
+                    // Install Angular CLI globally
+                    sh 'npm install -g @angular/cli'
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
@@ -42,7 +51,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Build Docker Image') {
             steps {
                 script {
