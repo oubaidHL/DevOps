@@ -3,7 +3,7 @@ pipeline {
     environment {
         DOCKER_IMAGE_NAME = 'app-front'
         DOCKER_IMAGE_VERSION = '1.0.0'
-        NVM_DIR = "${JENKINS_HOME}/.nvm"  // Define the NVM_DIR path
+        NVM_DIR = "${WORKSPACE}/.nvm"  // Define the NVM_DIR path in the workspace
     }
 
     stages {
