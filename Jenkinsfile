@@ -11,15 +11,10 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
-                    # Verify npm and ng versions
-                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/npm -v
-                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/ng --version
-
-                    # Install project dependencies
-                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/npm install
-
-                    # Build your Angular project
-                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/ng build
+                    npm -v
+                    ng --version
+                    npm install
+                    ng build
                 '''
             }
         }
