@@ -8,37 +8,33 @@ pipeline {
             }
         }
 
-        stage('Install Node.js') {
+        stage('Install Node.js and Build') {
             steps {
-                script {
-                    // Install Node.js using the Tool Installer plugin
-                    def nodejsHome = tool name: 'NodeJS-14', type: 'Tool'
-                    env.PATH = "${nodejsHome}/bin:${env.PATH}"
-                }
-            }
-        }
+                sh '''
+                    # Install nvm (Node Version Manager)
+                    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
 
-        stage('Install Angular CLI') {
-            steps {
-                sh 'npm install -g @angular/cli@12.0.5'
-            }
-        }
+                    # Activate nvm
+                    export NVM_DIR="$HOME/.nvm"
+                    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install'  // Install project-specific npm dependencies
-            }
-        }
+                    # Install Node.js 14 and make it the default version
+                    nvm install 14
+                    nvm alias default 14
 
-        stage('Check Schema') {
-            steps {
-                sh 'npm run schema:check'  // Adjust this command as per your project's requirements
-            }
-        }
+                    # Verify Node.js and npm versions
+                    node -v
+                    npm -v
 
-        stage('Build') {
-            steps {
-                sh 'ng build'  // Build your Angular application
+                    # Install Angular CLI
+                    npm install -g @angular/cli@12.0.5
+
+                    # Install project-specific npm dependencies
+                    npm install
+
+                    # Build your Angular application
+                    ng build
+                '''
             }
         }
 
