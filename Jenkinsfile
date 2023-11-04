@@ -1,16 +1,26 @@
 pipeline {
     agent any
 
-    tools {
-        // Define the Node.js and Angular CLI versions to use
-        nodejs 'NodeJS-14'
-        angular 'Angular-12.0.5'
-    }
-
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
+            }
+        }
+
+        stage('Install Node.js') {
+            steps {
+                script {
+                    // Install Node.js using the Tool Installer plugin
+                    def nodejsHome = tool name: 'NodeJS-14', type: 'Tool'
+                    env.PATH = "${nodejsHome}/bin:${env.PATH}"
+                }
+            }
+        }
+
+        stage('Install Angular CLI') {
+            steps {
+                sh 'npm install -g @angular/cli@12.0.5'
             }
         }
 
