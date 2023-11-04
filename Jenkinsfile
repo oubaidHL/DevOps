@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    tools {
+        // Define the Node.js and Angular CLI versions to use
+        nodejs 'NodeJS-14'
+        angular 'Angular-12.0.5'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -8,18 +14,25 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Install Dependencies') {
             steps {
-                sh '''
-export PATH=/home/vagrant/.nvm/versions/node/v21.1.0/bin:$PATH
-                    npm -v
-                    ng --version
-                    npm install
-                    ng build
-                '''
+                sh 'npm install'  // Install project-specific npm dependencies
             }
         }
-                stage('Build Docker Image') {
+
+        stage('Check Schema') {
+            steps {
+                sh 'npm run schema:check'  // Adjust this command as per your project's requirements
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'ng build'  // Build your Angular application
+            }
+        }
+
+        stage('Build Docker Image') {
             steps {
                 script {
                     sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ."
