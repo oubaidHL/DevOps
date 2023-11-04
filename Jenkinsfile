@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'npm install'
+                sh '/var/lib/jenkins/.nvm/versions/node/v21.1.0/bin/npm install'
                 sh 'ng build --prod'
             }
         }
