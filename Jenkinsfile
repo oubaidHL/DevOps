@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment {
-    DOCKER_IMAGE_NAME = 'app-front'
-    DOCKER_IMAGE_VERSION = '1.0.0'
-    NVM_DIR = "$HOME/.nvm"
+        DOCKER_IMAGE_NAME = 'app-front'
+        DOCKER_IMAGE_VERSION = '1.0.0'
+        NVM_DIR = "$HOME/.nvm"
     }
 
     stages {
@@ -12,27 +12,28 @@ pipeline {
                 checkout scm
             }
         }
+
         stage('Build') {
-            script {
-            def nodeBin = '/var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/'
-            def npmBin = '/var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/'
+            steps {
+                script {
+                    def nodeBin = '/var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/'
+                    def npmBin = '/var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/'
 
-            // Add the npm path to the PATH variable
-            env.PATH = "${npmBin}:${env.PATH}"
+                    // Add the npm path to the PATH variable
+                    env.PATH = "${npmBin}:${env.PATH}"
 
-            // Verify that the PATH variable is correctly set
-            sh 'echo $PATH'
+                    // Verify that the PATH variable is correctly set
+                    sh 'echo $PATH'
 
-            // Run npm install to install project dependencies
-            sh 'npm install'
+                    // Run npm install to install project dependencies
+                    sh 'npm install'
 
-            // Run ng build
-            sh 'ng build '
+                    // Run ng build
+                    sh 'ng build'
+                }
+            }
         }
-        }
-       
 
-       
         stage('Build Docker Image') {
             steps {
                 script {
@@ -40,6 +41,7 @@ pipeline {
                 }
             }
         }
+
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
@@ -49,11 +51,13 @@ pipeline {
                 }
             }
         }
+
         stage('Remove Docker Compose Containers') {
             steps {
                 sh 'docker-compose down'
             }
         }
+
         stage('Start Docker Compose') {
             steps {
                 sh 'docker-compose up -d'
