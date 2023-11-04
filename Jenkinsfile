@@ -11,6 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
+                    export /home/vagrant/.nvm/versions/node/v21.1.0/bin/npm:$PATH
                     npm -v
                     ng --version
                     npm install
