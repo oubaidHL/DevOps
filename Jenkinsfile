@@ -1,8 +1,9 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE_NAME = 'app-front'
-        DOCKER_IMAGE_VERSION = '1.0.0'
+    DOCKER_IMAGE_NAME = 'app-front'
+    DOCKER_IMAGE_VERSION = '1.0.0'
+    NVM_DIR = "$HOME/.nvm"
     }
 
     stages {
