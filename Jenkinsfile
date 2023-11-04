@@ -3,7 +3,6 @@ pipeline {
     environment {
         DOCKER_IMAGE_NAME = 'app-front'
         DOCKER_IMAGE_VERSION = '1.0.0'
-        NVM_DIR = "$HOME/.nvm"
     }
 
     stages {
@@ -13,36 +12,15 @@ pipeline {
             }
         }
 
-        stage('Set Node.js Version') {
-            steps {
-                script {
-                    def nodeVersion = '20.5.0'
-                    sh "nvm use ${nodeVersion}"
-                }
-            }
-        }
-
-        stage('Set Angular CLI Version') {
-            steps {
-                script {
-                    def ngBin = '/var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/ng'
-                    env.PATH = "${ngBin}:${env.PATH}"
-                }
-            }
-        }
-
-        stage('Install Angular CLI') {
-            steps {
-                script {
-                    // Install Angular CLI globally
-                    sh 'npm install -g @angular/cli'
-                }
-            }
-        }
-
         stage('Build') {
             steps {
                 script {
+                    // Ensure that Node.js version 20.5.0 is used
+                    sh 'nvm use 20.5.0'
+
+                    // Install Angular CLI (use the Node.js version's npm)
+                    sh 'npm install -g @angular/cli'
+
                     // Run npm install to install project dependencies
                     sh 'npm install'
 
@@ -51,7 +29,6 @@ pipeline {
                 }
             }
         }
-
         stage('Build Docker Image') {
             steps {
                 script {
