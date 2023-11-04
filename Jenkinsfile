@@ -1,40 +1,33 @@
-def DOCKER_IMAGE_NAME = "app-front"
-def DOCKER_IMAGE_VERSION = "1.0.0"
+def DOCKER_IMAGE_NAME = "your_image_name"
+def DOCKER_IMAGE_VERSION = "your_image_version"
 
 pipeline {
     agent any
 
     environment {
-        // Define the Docker image name and version as environment variables
         DOCKER_IMAGE_NAME = "${DOCKER_IMAGE_NAME}"
         DOCKER_IMAGE_VERSION = "${DOCKER_IMAGE_VERSION}"
     }
 
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Install Node.js and Build') {
             steps {
                 sh '''
-                    # Install nvm (Node Version Manager)
                     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-
-                    # Activate nvm
                     export NVM_DIR="$HOME/.nvm"
                     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-
-                    # Install Node.js 14 and make it the default version
                     nvm install 14
                     nvm alias default 14
-
-                    # Verify Node.js and npm versions
                     node -v
                     npm -v
-
-                    # Install Angular CLI
                     npm install -g @angular/cli@12.0.5
-
-                    # Install project-specific npm dependencies
                     npm install
-
-                    # Build your Angular application without the --prod flag
                     ng build
                 '''
             }
