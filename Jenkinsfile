@@ -1,5 +1,5 @@
-def DOCKER_IMAGE_NAME = "your_image_name"
-def DOCKER_IMAGE_VERSION = "your_image_version"
+def DOCKER_IMAGE_NAME = "app-front"
+def DOCKER_IMAGE_VERSION = "1.0.0"
 
 pipeline {
     agent any
