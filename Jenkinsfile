@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        PATH = "/var/lib/jenkins/.nvm/versions/node/v20.5.0/bin:$PATH"
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -15,8 +11,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/npm install --global npm@20.5.0
-                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/npm install --global @angular/cli@12.0.1
+                    npm install --global npm@20.5.0
+                    npm install --global @angular/cli@12.0.1
                 '''
             }
         }
@@ -25,14 +21,14 @@ pipeline {
             steps {
                 sh '''
                     # Verify npm and ng versions
-                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/npm -v
-                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/ng --version
+                    npm -v
+                    ng --version
 
                     # Install project dependencies
-                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/npm install
+                    npm install
 
                     # Build your Angular project
-                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/ng build
+                    ng build
                 '''
             }
         }
