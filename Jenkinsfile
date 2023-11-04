@@ -22,14 +22,18 @@ pipeline {
                     // Install nvm if not already installed
                     sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash'
                     sh "export NVM_DIR=${NVM_DIR}"
-                    sh "source ${NVM_DIR}/nvm.sh"
+
+                    // Load nvm.sh without 'source' (source is not available)
+                    sh "chmod +x ${NVM_DIR}/nvm.sh"
+                    sh "${NVM_DIR}/nvm.sh"
+
+                    // Install Node.js 20.5.0
                     sh 'nvm install 20.5.0'
                     sh 'nvm use 20.5.0'
 
                     // Set the full paths for ng, npm, and nvm
                     def nodeBin = "${NVM_DIR}/versions/node/v20.5.0/bin/"
                     def npmBin = "${NVM_DIR}/versions/node/v20.5.0/bin/"
-                    def nvmBin = "${NVM_DIR}/nvm.sh"
 
                     env.PATH = "${nodeBin}:${npmBin}:${env.PATH}"
 
@@ -37,7 +41,6 @@ pipeline {
                     sh 'echo $PATH'
 
                     // Install Angular CLI using the installed Node.js version
-                    sh "source ${nvmBin}"
                     sh 'npm install -g @angular/cli'
                 }
             }
