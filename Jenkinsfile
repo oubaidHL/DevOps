@@ -8,36 +8,36 @@ pipeline {
             }
         }
 
+       
         stage('Install Node.js and Build') {
-            steps {
-                sh '''
-                    # Install nvm (Node Version Manager)
-                    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
+    steps {
+        sh '''
+            # Install nvm (Node Version Manager)
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 
-                    # Activate nvm
-                    export NVM_DIR="$HOME/.nvm"
-                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            # Activate nvm
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
-                    # Install Node.js 14 and make it the default version
-                    nvm install 14
-                    nvm alias default 14
+            # Install Node.js 14 and make it the default version
+            nvm install 14
+            nvm alias default 14
 
-                    # Verify Node.js and npm versions
-                    node -v
-                    npm -v
+            # Verify Node.js and npm versions
+            node -v
+            npm -v
 
-                    # Install Angular CLI
-                    npm install -g @angular/cli@12.0.5
+            # Install Angular CLI
+            npm install -g @angular/cli@12.0.5
 
-                    # Install project-specific npm dependencies
-                    npm install
+            # Install project-specific npm dependencies
+            npm install
 
-                    # Build your Angular application
-                    ng build
-                '''
-            }
+            # Build your Angular application
+            ng build
+        '''
+    }
         }
-
         stage('Build Docker Image') {
             steps {
                 script {
