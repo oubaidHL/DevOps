@@ -11,8 +11,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                    npm install --global@20.5.0 npm
-                    npm install --global@12.0.1 @angular/cli
+                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/npm install --global npm@20.5.0
+                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/npm install --global @angular/cli@12.0.1
                 '''
             }
         }
@@ -21,14 +21,14 @@ pipeline {
             steps {
                 sh '''
                     # Verify npm and ng versions
-                    npm -v
-                    ng --version
+                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/npm -v
+                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/ng --version
 
                     # Install project dependencies
-                    npm install
+                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/npm install
 
                     # Build your Angular project
-                    ng build
+                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/ng build
                 '''
             }
         }
