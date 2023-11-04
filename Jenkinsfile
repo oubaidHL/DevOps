@@ -1,12 +1,14 @@
+def DOCKER_IMAGE_NAME = "app-front"
+def DOCKER_IMAGE_VERSION = "1.0.0"
+
 pipeline {
     agent any
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
+    environment {
+        // Define the Docker image name and version as environment variables
+        DOCKER_IMAGE_NAME = "${DOCKER_IMAGE_NAME}"
+        DOCKER_IMAGE_VERSION = "${DOCKER_IMAGE_VERSION}"
+    }
 
         stage('Install Node.js and Build') {
             steps {
