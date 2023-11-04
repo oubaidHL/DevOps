@@ -14,36 +14,36 @@ pipeline {
         }
 
         stage('Prepare Environment') {
-            steps {
-                script {
-                    // Create the .nvm directory in the workspace
-                    sh "mkdir -p ${NVM_DIR}"
+    steps {
+        script {
+            // Create the .nvm directory in the workspace
+            sh "mkdir -p ${NVM_DIR}"
 
-                    // Install nvm if not already installed
-                    sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash'
-                    
-                    // Load nvm by sourcing the nvm.sh script
-                    sh 'export NVM_DIR="$WORKSPACE/.nvm"'
-                    sh '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
+            // Install nvm if not already installed
+            sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash'
+            
+            // Load nvm by sourcing the nvm.sh script
+            sh 'export NVM_DIR="$WORKSPACE/.nvm"'
+            sh '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"'
 
-                    // Install Node.js 20.5.0
-                    sh 'nvm install 20.5.0'
-                    sh 'nvm use 20.5.0'
+            // Install Node.js 20.5.0
+            sh 'nvm install 20.5.0'
+            sh 'nvm use 20.5.0'
 
-                    // Set the full paths for ng, npm, and nvm
-                    def nodeBin = "${NVM_DIR}/versions/node/v20.5.0/bin/"
-                    def npmBin = "${NVM_DIR}/versions/node/v20.5.0/bin/"
+            // Set the full paths for ng, npm, and nvm
+            def nodeBin = "${NVM_DIR}/versions/node/v20.5.0/bin/"
+            def npmBin = "${NVM_DIR}/versions/node/v20.5.0/bin/"
 
-                    env.PATH = "${nodeBin}:${npmBin}:${env.PATH}"
+            env.PATH = "${nodeBin}:${npmBin}:${env.PATH}"
 
-                    // Verify that the PATH variable is correctly set
-                    sh 'echo $PATH'
+            // Verify that the PATH variable is correctly set
+            sh 'echo $PATH'
 
-                    // Install Angular CLI using the installed Node.js version
-                    sh 'npm install -g @angular/cli'
-                }
-            }
+            // Install Angular CLI using the installed Node.js version
+            sh 'npm install -g @angular/cli'
         }
+    }
+}
 
         stage('Build') {
             steps {
