@@ -32,8 +32,8 @@ pipeline {
                     # Install project-specific npm dependencies
                     npm install
 
-                    # Build your Angular application
-                    ng build --prod
+                    # Build your Angular application without the --prod flag
+                    ng build
                 '''
             }
         }
