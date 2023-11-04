@@ -3,7 +3,7 @@ pipeline {
     environment {
         DOCKER_IMAGE_NAME = 'app-front'
         DOCKER_IMAGE_VERSION = '1.0.0'
-        NVM_DIR = "${WORKSPACE}/.nvm"  // Define the NVM_DIR path in the workspace
+        NVM_DIR = "${WORKSPACE}/.nvm"
     }
 
     stages {
@@ -16,26 +16,28 @@ pipeline {
         stage('Prepare Environment') {
             steps {
                 script {
+                    // Create the .nvm directory in the workspace
+                    sh "mkdir -p ${NVM_DIR}"
+
                     // Install nvm if not already installed
                     sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash'
-                    sh "export NVM_DIR=${NVM_DIR}"  // Set the NVM_DIR environment variable
-                    sh "source ${NVM_DIR}/nvm.sh"   // Load nvm
-                    sh 'nvm install 20.5.0'         // Install the desired Node.js version
-                    sh 'nvm use 20.5.0'             // Use the desired Node.js version
+                    sh "export NVM_DIR=${NVM_DIR}"
+                    sh "source ${NVM_DIR}/nvm.sh"
+                    sh 'nvm install 20.5.0'
+                    sh 'nvm use 20.5.0'
 
                     // Set the full paths for ng, npm, and nvm
                     def nodeBin = "${NVM_DIR}/versions/node/v20.5.0/bin/"
                     def npmBin = "${NVM_DIR}/versions/node/v20.5.0/bin/"
                     def nvmBin = "${NVM_DIR}/nvm.sh"
 
-                    // Add the full paths to the PATH variable
                     env.PATH = "${nodeBin}:${npmBin}:${env.PATH}"
 
                     // Verify that the PATH variable is correctly set
                     sh 'echo $PATH'
 
                     // Install Angular CLI using the installed Node.js version
-                    sh "source ${nvmBin}"  // Load nvm (again)
+                    sh "source ${nvmBin}"
                     sh 'npm install -g @angular/cli'
                 }
             }
@@ -44,13 +46,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Verify that the PATH variable still contains the full paths
                     sh 'echo $PATH'
-
-                    // Run npm install to install project dependencies
                     sh 'npm install'
-
-                    // Run ng build
                     sh 'ng build'
                 }
             }
