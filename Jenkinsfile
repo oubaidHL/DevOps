@@ -12,7 +12,7 @@ pipeline {
                 checkout scm
             }
         }
-        astage('Build') {
+        stage('Build') {
             script {
             def nodeBin = '/var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/'
             def npmBin = '/var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/'
