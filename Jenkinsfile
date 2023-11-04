@@ -13,27 +13,36 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Set Node.js Version') {
             steps {
                 script {
-                    def nodeBin = "${NVM_DIR}/versions/node/v14.17.3/bin/"
-                    def npmBin = "${NVM_DIR}/versions/node/v14.17.3/bin/"
-
-                    // Add the npm path to the PATH variable
-                    env.PATH = "${npmBin}:${env.PATH}"
-
-                    // Verify that the PATH variable is correctly set
-                    sh 'echo $PATH'
-
-                    // Run npm install to install project dependencies
-                    sh 'npm install'
-
-                    // Run ng build
-                    sh '/var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/ng build'
+                    def nodeVersion = '20.5.0'
+                    sh "nvm use ${nodeVersion}"
                 }
             }
         }
 
+        stage('Set Angular CLI Version') {
+            steps {
+                script {
+                    def ngBin = '/var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/ng'
+                    env.PATH = "${ngBin}:${env.PATH}"
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    // Run npm install to install project dependencies
+                    sh 'npm install'
+
+                    // Run ng build
+                    sh 'ng build'
+                }
+            }
+        }
+        
         stage('Build Docker Image') {
             steps {
                 script {
