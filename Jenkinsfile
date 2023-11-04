@@ -8,6 +8,15 @@ pipeline {
             }
         }
 
+        stage('Install Dependencies') {
+            steps {
+                sh '''
+                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/npm install --global npm@20.5.0
+                    /var/lib/jenkins/.nvm/versions/node/v20.5.0/bin/npm install --global @angular/cli@12.0.1
+                '''
+            }
+        }
+
         stage('Build') {
             steps {
                 sh '''
