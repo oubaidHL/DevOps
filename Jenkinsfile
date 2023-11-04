@@ -3,7 +3,6 @@ pipeline {
     environment {
         DOCKER_IMAGE_NAME = 'app-front'
         DOCKER_IMAGE_VERSION = '1.0.0'
-        NVM_DIR = "$HOME/.nvm"
     }
 
     stages {
@@ -13,23 +12,9 @@ pipeline {
             }
         }
 
-        stage('Set Up Node.js and npm') {
-            steps {
-                script {
-                    // Install or use the desired Node.js version using NVM
-                    sh "export NVM_DIR=\"$NVM_DIR\" && [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\""
-                    sh "nvm install 20.5.0"
-                }
-            }
-        }
-
         stage('Build') {
             steps {
                 script {
-                    // Use the installed Node.js and npm
-                    def nodeBin = '/var/lib/jenkins/.nvm/versions/node/v20.5.0/bin'
-                    env.PATH = "${nodeBin}:${env.PATH}"
-
                     // Verify that the PATH variable is correctly set
                     sh 'echo $PATH'
 
